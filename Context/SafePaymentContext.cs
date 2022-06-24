@@ -9,7 +9,10 @@ public class SafePaymentContext : DbContext
         : base(options)
     {
     }
-    
+
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Customer>().ToTable("Customer");

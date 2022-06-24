@@ -1,5 +1,6 @@
 using SafePayment.Context;
 using SafePayment.Models;
+using System.Security.Cryptography;
 
 namespace SafePayment.Services.Transactions;
 
@@ -12,8 +13,13 @@ public class ValidateTransaction
         var isValid = false;
 
         if (verifyCredentials.Verify(transaction.Customer))
-
-            _context.Add(transaction);
+            _context.Add<Transaction>(new Transaction {
+                Customer = transaction.Customer,
+                Amount = transaction.Amount,
+                Type = transaction.Type,
+                TransactionComplete = true,
+                Token = transaction.GetHashCode().ToString()
+            });
             _context.SaveChanges();
             isValid = true;
 
